@@ -203,6 +203,283 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int minusOne(void) {
+  int flip=~(0x1);
+  int add=flip+1;
+  return add;
+}
+/* 
+ * specialBits - return bit pattern 0xffca3fff
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 3
+ *   Rating: 1
+ */
+int specialBits(void) {
+     int bitP=0x28;
+    int t=(~0)&(bitP<<14);
+    return t;
+}
+/* 
+ * TMax - return maximum two's complement integer 
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 4
+ *   Rating: 1
+ */
+int tmax(void) {
+
+
+  return 2;
+}
+//2
+/* 
+ * anyEvenBit - return 1 if any even-numbered bit in word set to 1
+ *   where bits are numbered from 0 (least significant) to 31 (most significant)
+ *   Examples anyEvenBit(0xA) = 0, anyEvenBit(0xE) = 1
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 12
+ *   Rating: 2
+ */
+int anyEvenBit(int x) {
+  unsigned int evenBitMask = 0x55555555; // In binary: 0101 0101 0101 0101 0101 0101 0101 0101
+    
+    // Use bitwise AND to check if any even-numbered bit is set
+    unsigned int result = !!(x & evenBitMask);
+    
+    return result;
+  }
+/* 
+ * byteSwap - swaps the nth byte and the mth byte
+ *  Examples: byteSwap(0x12345678, 1, 3) = 0x56341278
+ *            byteSwap(0xDEADBEEF, 0, 2) = 0xDEEFBEAD
+ *  You may assume that 0 <= n <= 3, 0 <= m <= 3
+ *  Legal ops: ! ~ & ^ | + << >>
+ *  Max ops: 25
+ *  Rating: 2
+ */
+int byteSwap(int x, int n, int m) {
+  unsigned int one=0xFF; 
+   int leftB=(x>>(n<<3))&one;
+   int rightb=(x>>(m<<3))&one;
+  x=x&~(one<<(n<<3));
+    x=x&~(one<<(m<<3));
+  x=x|(leftB<<(m<<3));
+  x=x|(rightb<<(n<<3));
+
+    return x;
+}
+/* 
+ * dividePower2 - Compute x/(2^n), for 0 <= n <= 30
+ *  Round toward zero
+ *   Examples: dividePower2(15,1) = 7, dividePower2(-33,4) = -2
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 15
+ *   Rating: 2
+ */
+int dividePower2(int x, int n) {
+  x=x>>n;
+  
+  return x;
+}
+/* 
+ * floatNegate - Return bit-level equivalent of expression -f for
+ *   floating point argument f.
+ *   Both the argument and result are passed as unsigned int's, but
+ *   they are to be interpreted as the bit-level representations of
+ *   single-precision floating point values.
+ *   When argument is NaN, return argument.
+ *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Max ops: 10
+ *   Rating: 2
+ */
+unsigned floatNegate(unsigned uf) {
+ return 2;
+}
+/* 
+ * getByte - Extract byte n from word x
+ *   Bytes numbered from 0 (least significant) to 3 (most significant)
+ *   Examples: getByte(0x12345678,1) = 0x56
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 6
+ *   Rating: 2
+ */
+int getByte(int x, int n) {
+  int oneB=0xFF;
+  int byteE=(x>>n)&oneB;
+  return byteE;
+}
+/* 
+ * isEqual - return 1 if x == y, and 0 otherwise 
+ *   Examples: isEqual(5,5) = 1, isEqual(4,5) = 0
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 5
+ *   Rating: 2
+ */
+int isEqual(int x, int y) {
+  int k=!((x&y)|(~x&~y));
+
+  return !k;
+}
+//3
+/* 
+ * addOK - Determine if can compute x+y without overflow
+ *   Example: addOK(0x80000000,0x80000000) = 0,
+ *            addOK(0x80000000,0x70000000) = 1, 
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 20
+ *   Rating: 3
+ */
+int addOK(int x, int y) {
+
+  return 2;
+}
+/* 
+ * bitMask - Generate a mask consisting of all 1's 
+ *   lowbit and highbit
+ *   Examples: bitMask(5,3) = 0x38
+ *   Assume 0 <= lowbit <= 31, and 0 <= highbit <= 31
+ *   If lowbit > highbit, then mask should be all 0's
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 16
+ *   Rating: 3
+ */
+int bitMask(int highbit, int lowbit) {
+  int lowbit=(~0)<<lowbit;
+  int highbit=~0<<highbit;
+  int  plus=lowbit^highbit;
+
+  return (plus&highbit);
+}
+/*
+ * ezThreeFourths - multiplies by 3/4 rounding toward 0,
+ *   Should exactly duplicate effect of C expression (x*3/4),
+ *   including overflow behavior.
+ *   Examples: ezThreeFourths(11) = 8
+ *             ezThreeFourths(-9) = -6
+ *             ezThreeFourths(1073741824) = -268435456 (overflow)
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 12
+ *   Rating: 3
+ */
+int ezThreeFourths(int x) {
+  x=x>>2;
+  x=x+x+x;
+  return x;
+}
+/* 
+ * isGreater - if x > y  then return 1, else return 0 
+ *   Example: isGreater(4,5) = 0, isGreater(5,4) = 1
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 24
+ *   Rating: 3
+ */
+int isGreater(int x, int y) {
+   int signX = (x >> 31) & 1;  // Get the sign bit of x (0 for non-negative, 1 for negative)
+    int signY = (y >> 31) & 1;  // Get the sign bit of y (0 for non-negative, 1 for negative)
+
+    // If the signs are different, return 1 if x is non-negative, else 0
+    int signDiff = (signX ^ signY) & signX;
+
+    // If the signs are the same, return 1 if x - y is non-negative, else 0
+    int diffSign = ((x + (~y + 1)) >> 31) & 1;
+
+    // Return 1 if either signDiff or diffSign is 1, else 0
+    return signDiff | diffSign;
+}
+/* 
+ * replaceByte(x,n,c) - Replace byte n in x with c
+ *   Bytes numbered from 0 (LSB) to 3 (MSB)
+ *   Examples: replaceByte(0x12345678,1,0xab) = 0x1234ab78
+ *   You can assume 0 <= n <= 3 and 0 <= c <= 255
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 10
+ *   Rating: 3
+ */
+int replaceByte(int x, int n, int c) {
+
+  return 3;
+}
+//4
+/* 
+ * bang - Compute !x without using !
+ *   Examples: bang(3) = 0, bang(0) = 1
+ *   Legal ops: ~ & ^ | + << >>
+ *   Max ops: 12
+ *   Rating: 4 
+ */
+int bang(int x) {
+  int last=(x>>31);
+
+  return last&1;
+}
+/*
+ * bitParity - returns 1 if x contains an odd number of 0's
+ *   Examples: bitParity(5) = 0, bitParity(7) = 1
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 20
+ *   Rating: 4
+ */
+int bitParity(int x) {
+  int oddBits=0xAAAAAAAA;
+  int match=oddBits&x;
+
+  return !(!match);
+}
+/* howManyBits - return the minimum number of bits required to represent x in
+ *             two's complement
+ *  Examples: howManyBits(12) = 5
+ *            howManyBits(298) = 10
+ *            howManyBits(-5) = 4
+ *            howManyBits(0)  = 1
+ *            howManyBits(-1) = 1
+ *            howManyBits(0x80000000) = 32
+ *  Legal ops: ! ~ & ^ | + << >>
+ *  Max ops: 90
+ *  Rating: 4
+ */
+int howManyBits(int x) {
+  return 0;
+}
+/*
+ * isPallindrome - Return 1 if bit pattern in x is equal to its mirror image
+ *   Example: isPallindrome(0x01234567E6AC2480) = 1
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 45
+ *   Rating: 4
+ */
+int isPallindrome(int x) {
+    return 2;
+}
+/*
+ * isPower2 - returns 1 if x is a power of 2, and 0 otherwise
+ *   Examples: isPower2(5) = 0, isPower2(8) = 1, isPower2(0) = 0
+ *   Note that no negative number is a power of 2.
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 20
+ *   Rating: 4
+ */
+int isPower2(int x) {
+  int isNegative=!(x>>31);//return 1 if it is negative
+  int oneB=(x)&(x&~0);//return 0 if there only one 1 set
+  return (!isNegative&!oneB);
+}
+/* 
+ * signMag2TwosComp - Convert from sign-magnitude to two's complement
+ *   where the MSB is the sign bit
+ *   Example: signMag2TwosComp(0x80000005) = -5.
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 15
+ *   Rating: 4
+ */
+int signMag2TwosComp(int x) {
+  return 2;
+}
+
+/* 
+ * minusOne - return a value of -1 
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 2
+ *   Rating: 1
+ */
+int minusOne(void) {
   return 2;
 }
 /* 
